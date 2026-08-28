@@ -1,113 +1,74 @@
-# vinext-starter
+# MC DÉCORS — Artisan Peintre & Décorateur à Lessay (50430)
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+Site vitrine officiel de l'entreprise **MC DÉCORS**, dirigée par **Maxime Couillard**, artisan peintre et décorateur établi au **Parc d'Activités de la Gaslonde à Lessay (50430)** dans la Manche.
 
-## Prerequisites
+---
 
-- Node.js `>=22.13.0`
-- Linux with `flock`, `curl`, and GNU `timeout`
+## 🎨 À propos de MC DÉCORS
 
-## Sites Lifecycle
+- **Dirigeant :** Maxime Couillard (plus de 20 ans d'expérience)
+- **Localisation :** Parc de la Gaslonde (Parcelle n°9), 50430 Lessay
+- **Téléphone :** [06 77 50 67 34](tel:+33677506734)
+- **Prestations :**
+  - Peinture intérieure & extérieure (neuf & rénovation)
+  - Décoration & conseils couleurs sur-mesure
+  - Ravalement & protection de façades
+  - Pose de revêtements de sols (parquet, vitrification, sols PVC)
+  - Spécialiste Tissu Tendu (murs & plafonds tendus acoustiques)
+  - Revêtements muraux & Vitrerie
+- **Zone d'intervention :** Lessay, Coutances, Périers, Créances, La Haye, Agon-Coutainville, Barneville-Carteret, Saint-Lô et toute la Manche (+ 35 km).
 
-The Sites lifecycle CLI runs the locked dependency install before returning this checkout. Edit the source under `app/`, then checkpoint when a coherent milestone is ready to inspect or share. The remote Sites builder runs `npm run build` against the pushed commit. Do not repeat install or build as a normal pre-checkpoint step.
+---
 
-This starter does not use `wrangler.jsonc`.
+## 🚀 Fonctionnalités du site
 
-`install:ci` is intentionally a single, non-retrying `npm ci`. It refuses a concurrent install for the same project, consumes a matching image-seeded npm cache with `--prefer-offline` while retaining registry fallback for a missing cache object, otherwise downloads and verifies the complete vinext tarball recorded in `package-lock.json`, limits npm to one socket, and terminates a stalled install. `build` applies a short timeout. These helpers target Linux and use GNU `timeout`; they are not native macOS scripts.
+- **Design Premium & Responsive :** Charte graphique soignée reprenant les teintes dorées et sombres de l'enseigne et du logo officiel.
+- **Référencement Local (SEO) :** Optimisé pour Google Search et Google Maps avec balisage Schema.org (`HousePainter` / `LocalBusiness`).
+- **Prêt pour GitHub Pages :** Export statique Next.js et déploiement automatisé via GitHub Actions.
+- **Appel & Devis en un clic :** Boutons d'appel direct sur mobile et formulaire de devis prérempli par e-mail.
 
-Scripts that need writable project-scoped home, npm, XDG, and temporary paths use `scripts/sites-env.sh`. The `dev` and `start` scripts honor the caller's runtime environment and keep Wrangler logs inside the checkout. The generated `.sites-runtime/` directory is disposable and ignored by Git.
+---
 
-## Included Shape
+## 💻 Développement local
 
-- edit site code under `app/`
-- `app/chatgpt-auth.ts` provides optional dispatch-owned ChatGPT sign-in helpers
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/index.ts` reads the D1 binding from the Cloudflare Worker environment
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
+Pour lancer le projet sur votre machine :
 
-## Workspace Auth Headers
+```bash
+# 1. Cloner le dépôt
+git clone https://github.com/TibTIBUS/mcdecors.git
+cd mcdecors
 
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
+# 2. Installer les dépendances
+npm install
 
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+# 3. Lancer le serveur de développement local
+npm run dev
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur pour visualiser le site.
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+---
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- In a Server Component, start sign-in with
-  `<a href={chatGPTSignInPath(returnTo)} target="_top">`. The auth helper
-  module is server-only; do not import it into a Client Component.
-- Do not use `fetch`, XHR, a client-side router, or a framework link that can
-  prefetch the sign-in route. SIWC must start as a top-level navigation.
-- Never request the AuthAPI authorization endpoint directly. The dispatch-owned
-  `/signin-with-chatgpt` route must start the SIWC flow.
-- Use `chatGPTSignOutPath(returnTo)` for browser sign-out links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+## 📦 Build statique
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+Pour générer l'export statique destiné à GitHub Pages :
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+```bash
+npm run build
+```
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+Les fichiers générés se trouveront dans le dossier `./out`.
 
-## Diagnostic Commands
+---
 
-- `npm run install:ci`: perform the one bounded lockfile install
-- `npm run dev`: start the Vite/Vinext development server
-- `npm run build`: build the deployable Sites artifact
-- `npm run start`: start the built Vinext application
-- `npm test`: build and verify the rendered development-preview metadata
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+## 🌐 Activer GitHub Pages sur votre dépôt
 
-Use build commands for targeted diagnosis after a remote failure, not as part of the normal checkpoint path.
+1. Rendez-vous sur votre dépôt GitHub : `https://github.com/TibTIBUS/mcdecors`
+2. Cliquez sur **Settings** (Paramètres) > **Pages** (dans le menu de gauche).
+3. Dans la section **Build and deployment** > **Source**, sélectionnez **GitHub Actions**.
+4. Poussez votre code sur la branche `main` : le workflow `.github/workflows/deploy.yml` publiera automatiquement votre site sur :
+   👉 **`https://tibtibus.github.io/mcdecors/`**
 
-The timeout defaults can be overridden for a controlled canary with `SITES_INSTALL_TIMEOUT`, `SITES_INSTALL_KILL_AFTER`, `SITES_BUILD_TIMEOUT`, and `SITES_BUILD_KILL_AFTER`. A timeout fails the command; the helpers never retry an unchanged install or build.
+---
 
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+© 2026 MC DÉCORS — SARL Unipersonnelle au capital de 5 000 € · SIREN 819 882 580 · Lessay (Manche).
