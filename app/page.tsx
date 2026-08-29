@@ -15,6 +15,7 @@ import {
   Star,
   Waves,
 } from "lucide-react";
+import { DemoPopup } from "@/components/demo-popup";
 
 const services = [
   {
@@ -560,6 +561,8 @@ export default function Home() {
       <a className="mobile-call" href="tel:+33677506734" aria-label="Appeler l'artisan">
         <Phone size={18} /> Appeler l’artisan (06 77 50 67 34)
       </a>
+
+      <DemoPopup />
 
       {/* JSON-LD Structured Data */}
       <script

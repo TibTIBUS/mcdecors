@@ -874,6 +874,87 @@ h2 {
   display: none;
 }
 
+/* Demo popup */
+.demo-dialog {
+  max-width: 560px !important;
+  gap: 0 !important;
+  padding: 38px !important;
+  overflow: hidden;
+  border: 0 !important;
+  border-top: 5px solid var(--gold) !important;
+  border-radius: 6px !important;
+  color: var(--ink) !important;
+  background: #fff !important;
+  box-shadow: 0 35px 100px rgba(8, 10, 12, 0.35) !important;
+}
+.demo-dialog::before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  right: -85px;
+  top: -85px;
+  border-radius: 50%;
+  background: var(--gold-bg);
+  pointer-events: none;
+}
+.demo-kicker {
+  margin-bottom: 17px;
+  color: var(--gold-dark);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+.demo-title {
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 33px !important;
+  line-height: 1.12 !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.025em;
+}
+.demo-description {
+  margin-top: 18px !important;
+  color: var(--muted) !important;
+  font-size: 15px !important;
+  line-height: 1.75 !important;
+}
+.demo-description strong {
+  color: var(--ink);
+  font-weight: 800;
+}
+.demo-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 28px;
+}
+.demo-button {
+  min-height: 52px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 850;
+  transition: transform 0.2s, background 0.2s, border-color 0.2s;
+}
+.demo-button:hover { transform: translateY(-1px); }
+.demo-button-primary {
+  color: white;
+  background: var(--gold-dark);
+}
+.demo-button-primary:hover { background: var(--gold); }
+.demo-button-secondary {
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  background: var(--paper);
+}
+.demo-button-secondary:hover {
+  border-color: var(--gold-light);
+  background: #f2ede2;
+}
+
 /* Responsive Media Queries */
 @media (max-width: 990px) {
   nav { display: none; }
@@ -944,6 +1025,12 @@ h2 {
     font-size: 15px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
   }
+  .demo-dialog {
+    width: calc(100% - 28px) !important;
+    padding: 30px 23px !important;
+  }
+  .demo-title { font-size: 29px !important; }
+  .demo-description { font-size: 14px !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {
